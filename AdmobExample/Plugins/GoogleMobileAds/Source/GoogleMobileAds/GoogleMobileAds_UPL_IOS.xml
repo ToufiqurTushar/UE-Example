@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- init section is always evaluated once per architecture -->
+	<init>
+		<log text="GoogleMobileAds IOS UPL initialization"/>
+	</init>
+	
+	<!-- iOS Pod modifications -->
+	<buildDylibAdditions>
+		<insert>
+			<!-- In UE5, CocoaPods are typically added via Build.cs PublicAdditionalFrameworks mapping, or via custom podspec. -->
+		</insert>
+	</buildDylibAdditions>
+
+	<iosPListUpdates>
+		<addElements tag="dict">
+			<key>GADApplicationIdentifier</key>
+			<string>ca-app-pub-3940256099942544~1458002511</string>
+			<key>SKAdNetworkItems</key>
+			<array>
+				<dict>
+					<key>SKAdNetworkIdentifier</key>
+					<string>cstr6suwn9.skadnetwork</string>
+				</dict>
+			</array>
+		</addElements>
+	</iosPListUpdates>
+</root>

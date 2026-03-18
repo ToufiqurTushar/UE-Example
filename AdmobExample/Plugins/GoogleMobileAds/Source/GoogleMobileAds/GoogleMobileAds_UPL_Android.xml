@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- init section is always evaluated once per architecture -->
+	<init>
+		<log text="GoogleMobileAds Android UPL initialization"/>
+	</init>
+
+	<!-- optional additions to the GameActivity imports in GameActivity.java -->
+	<gameActivityImportAdditions>
+		<insert>
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.LoadAdError;
+import androidx.annotation.NonNull;
+		</insert>
+	</gameActivityImportAdditions>
+
+	<!-- optional additions to the GameActivity class in GameActivity.java -->
+	<gameActivityClassAdditions>
+		<insert>
+	// --- Google Mobile Ads Implementation ---
+	public native void nativeOnUserEarnedReward();
+	private InterstitialAd mInterstitialAd;
+
+	public void AndroidThunkJava_GoogleMobileAds_Initialize() {
+		MobileAds.initialize(this, new OnInitializationCompleteListener() {
+			@Override
+			public void onInitializationComplete(InitializationStatus initializationStatus) {
+				android.util.Log.d("GoogleMobileAds", "MobileAds initialized.");
+			}
+		});
+	}
+
+	public void AndroidThunkJava_GoogleMobileAds_LoadInterstitial(String adUnitId) {
+		AdRequest adRequest = new AdRequest.Builder().build();
+		InterstitialAd.load(this, adUnitId, adRequest,
+			new InterstitialAdLoadCallback() {
+				@Override
+				public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+					// The mInterstitialAd reference will be null until
+					// an ad is loaded.
+					mInterstitialAd = interstitialAd;
+					android.util.Log.i("GoogleMobileAds", "onAdLoaded");
+				}
+
+				@Override
+				public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+					// Handle the error
+					android.util.Log.d("GoogleMobileAds", loadAdError.toString());
+					mInterstitialAd = null;
+				}
+			});
+	}
+
+	public void AndroidThunkJava_GoogleMobileAds_ShowInterstitial() {
+		_activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (mInterstitialAd != null) {
+					mInterstitialAd.show(_activity);
+				} else {
+					android.util.Log.d("GoogleMobileAds", "The interstitial ad wasn't ready yet.");
+				}
+			}
+		});
+	}
+
+	// --- Rewarded Ads ---
+	private RewardedAd mRewardedAd;
+
+	public void AndroidThunkJava_GoogleMobileAds_LoadRewarded(String adUnitId) {
+		AdRequest adRequest = new AdRequest.Builder().build();
+		RewardedAd.load(this, adUnitId, adRequest,
+			new RewardedAdLoadCallback() {
+				@Override
+				public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+					android.util.Log.d("GoogleMobileAds", loadAdError.getMessage());
+					mRewardedAd = null;
+				}
+
+				@Override
+				public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+					mRewardedAd = rewardedAd;
+					android.util.Log.d("GoogleMobileAds", "Rewarded ad was loaded.");
+				}
+			});
+	}
+
+	public void AndroidThunkJava_GoogleMobileAds_ShowRewarded() {
+		_activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (mRewardedAd != null) {
+					mRewardedAd.show(_activity, new OnUserEarnedRewardListener() {
+						@Override
+						public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+							android.util.Log.d("GoogleMobileAds", "The user earned the reward.");
+							nativeOnUserEarnedReward();
+						}
+					});
+				} else {
+					android.util.Log.d("GoogleMobileAds", "The rewarded ad wasn't ready yet.");
+				}
+			}
+		});
+	}
+		</insert>
+	</gameActivityClassAdditions>
+
+	<!-- optional additions to proguard -->
+	<proguardAdditions>
+		<insert>
+-keep class com.google.android.gms.ads.** { *; }
+		</insert>
+	</proguardAdditions>
+
+	<!-- optional updates applied to AndroidManifest.xml -->
+	<androidManifestUpdates>
+		<addElements tag="application">
+			<!-- Google Mobile Ads Test App ID -->
+			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713"/>
+		</addElements>
+	</androidManifestUpdates>
+
+	<!-- build.gradle additions -->
+	<buildGradleAdditions>
+		<insert>
+dependencies {
+	implementation 'com.google.android.gms:play-services-ads:24.9.0'
+	implementation 'com.google.android.ump:user-messaging-platform:4.0.0'
+}
+		</insert>
+	</buildGradleAdditions>
+</root>

@@ -9,3 +9,10 @@
 .vsconfig
 /Plugins/AGRV/Binaries
 /Plugins/AGRV/Intermediate
+/AdmobExample/Intermediate
+/admob_flutter/external/google_mobile_ads-7.0.0
+/AdmobExample/DerivedDataCache
+/AdmobExample/Saved
+/AdmobExample/Plugins/GoogleMobileAds/Intermediate
+/AdmobExample/Build
+/AdmobExample/Binaries
