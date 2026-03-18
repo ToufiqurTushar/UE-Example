@@ -18,6 +18,10 @@ class GOOGLEMOBILEADS_API UGoogleMobileAdsBPLibrary : public UBlueprintFunctionL
 public:
 	static FOnUserEarnedRewardDelegate OnUserEarnedReward;
 
+	/** Sets test device IDs for the Ad Requests */
+	UFUNCTION(BlueprintCallable, Category = "GoogleMobileAds")
+	static void SetTestDeviceIds(const TArray<FString>& DeviceIDs);
+
 	/** Initializes the Google Mobile Ads SDK */
 	UFUNCTION(BlueprintCallable, Category = "GoogleMobileAds")
 	static void InitializeAdMob();

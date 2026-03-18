@@ -25,6 +25,11 @@ extern "C" {
 #include "IOS/GoogleMobileAdsIOS.h"
 #endif
 
+void UGoogleMobileAdsBPLibrary::SetTestDeviceIds(const TArray<FString>& DeviceIDs)
+{
+	// Stub implementation. Here you would loop over DeviceIDs and pass them to iOS/Android SDKs.
+}
+
 void UGoogleMobileAdsBPLibrary::InitializeAdMob()
 {
 #if PLATFORM_ANDROID
