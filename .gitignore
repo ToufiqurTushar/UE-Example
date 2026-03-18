@@ -1,0 +1,11 @@
+/Intermediate
+/Saved
+/Binaries
+/Build
+.DS_Store
+/DerivedDataCache
+/.idea
+/.vs
+.vsconfig
+/Plugins/AGRV/Binaries
+/Plugins/AGRV/Intermediate
