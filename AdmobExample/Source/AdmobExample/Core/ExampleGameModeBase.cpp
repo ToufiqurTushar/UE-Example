@@ -1,6 +1,6 @@
 #include "ExampleGameModeBase.h"
 
-#include "AdmobUserWidget.h"
+#include "../UI/AdmobUserWidget.h"
 #include "Blueprint/UserWidget.h"
 
 void AExampleGameModeBase::BeginPlay() {

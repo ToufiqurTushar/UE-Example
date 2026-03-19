@@ -23,6 +23,21 @@ protected:
 	virtual void NativeDestruct() override;
 
 private:
+    int32 CurrentTabIndex = 0;
+    void SwitchTab(int32 Index);
+
+	UFUNCTION() void OnTab0Clicked();
+	UFUNCTION() void OnTab1Clicked();
+	UFUNCTION() void OnTab2Clicked();
+	UFUNCTION() void OnTab3Clicked();
+	UFUNCTION() void OnTab4Clicked();
+
+    UWidget* BuildAdsPage();
+    UWidget* BuildListPage();
+    UWidget* BuildProfilePage();
+    UWidget* BuildSettingsPage();
+    UWidget* BuildAboutPage();
+
 	void HandleRewardEarned();
 
 	UFUNCTION()
@@ -35,16 +50,10 @@ private:
     UCanvasPanel* Root;
     
     UPROPERTY()
-    UTextBlock* AppBarText;
+    class UWidgetSwitcher* BodySwitcher;
 
-	UPROPERTY()
-	UVerticalBox* CenterBox;
-
-	UPROPERTY()
-	UButton* BtnShowInterstitial;
-	
-	UPROPERTY()
-	UButton* BtnShowRewarded;
+    UPROPERTY()
+    class UHorizontalBox* BottomNavBar;
 
 	UPROPERTY()
 	UTextBlock* BannerPlaceholder;

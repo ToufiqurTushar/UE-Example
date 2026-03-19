@@ -24,6 +24,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Fonts/SlateFontInfo.h"
 #include "Styling/SlateTypes.h"
+#include "Components/WidgetSwitcher.h"
 
 namespace Flutter
 {
@@ -651,5 +652,143 @@ namespace Flutter
                 }
             }), 3.0f, false);
         }
+    };
+
+    struct IndexedStack
+    {
+        UWidgetSwitcher* Widget;
+        IndexedStack() {
+            Widget = CreateFlutterUMGWidget<UWidgetSwitcher>();
+        }
+        IndexedStack& Index(int32 ActiveIndex) {
+            Widget->SetActiveWidgetIndex(ActiveIndex);
+            return *this;
+        }
+        template<typename... Args>
+        IndexedStack& operator()(Args... args) {
+            (AddChild(args), ...);
+            return *this;
+        }
+    private:
+        void AddChild(UWidget* Child) {
+            if (Child) Widget->AddChild(Child);
+        }
+    public:
+        operator UWidget*() const { return Widget; }
+    };
+
+    struct BottomNavigationBarItem
+    {
+        FString IconText;
+        FString Label;
+        class UTexture2D* IconImage;
+
+        BottomNavigationBarItem(const FString& InIcon, const FString& InLabel, UTexture2D* InImage = nullptr) 
+            : IconText(InIcon), Label(InLabel), IconImage(InImage) {}
+    };
+
+    struct BottomNavigationBar
+    {
+        UBorder* Wrapper = nullptr;
+        UHorizontalBox* Widget = nullptr;
+        int32 CurrentIndex = 0;
+
+        BottomNavigationBar() {
+            Wrapper = CreateFlutterUMGWidget<UBorder>();
+            Wrapper->SetBrushColor(FLinearColor(0.85f, 0.85f, 0.85f, 1.0f)); 
+            Wrapper->SetPadding(FMargin(0, 0.5f, 0, 0)); 
+
+            UBorder* InnerBg = CreateFlutterUMGWidget<UBorder>();
+            InnerBg->SetBrushColor(FLinearColor(0.98f, 0.98f, 0.98f, 1.0f)); 
+            InnerBg->SetPadding(FMargin(0, 4.f, 0, 16.f)); 
+            
+            Widget = CreateFlutterUMGWidget<UHorizontalBox>();
+            InnerBg->AddChild(Widget);
+            Wrapper->AddChild(InnerBg);
+        }
+
+        BottomNavigationBar(UHorizontalBox* ExistingWidget) {
+            Widget = ExistingWidget;
+        }
+
+        BottomNavigationBar& Items(const TArray<BottomNavigationBarItem>& InItems, UObject* ContextObject, const TArray<FName>& Callbacks, int32 InCurrentIndex = 0) {
+            Widget->ClearChildren();
+            CurrentIndex = InCurrentIndex;
+            
+            for (int32 i = 0; i < InItems.Num(); ++i) {
+                UBorder* ItemContainer = CreateFlutterUMGWidget<UBorder>();
+                ItemContainer->SetBrushColor(FLinearColor::Transparent);
+                
+                UButton* Btn = CreateFlutterUMGWidget<UButton>();
+                FButtonStyle BtnStyle = Btn->GetStyle();
+                BtnStyle.Normal.TintColor = FSlateColor(FLinearColor::Transparent);
+                BtnStyle.Hovered.TintColor = FSlateColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.04f));
+                BtnStyle.Pressed.TintColor = FSlateColor(FLinearColor(0.0f, 0.0f, 0.0f, 0.08f));
+                BtnStyle.Normal.DrawAs = ESlateBrushDrawType::Box;
+                BtnStyle.Hovered.DrawAs = ESlateBrushDrawType::Box;
+                BtnStyle.Pressed.DrawAs = ESlateBrushDrawType::Box;
+                Btn->SetStyle(BtnStyle);
+
+                if (ContextObject && Callbacks.IsValidIndex(i)) {
+                    FScriptDelegate Delegate;
+                    Delegate.BindUFunction(ContextObject, Callbacks[i]);
+                    Btn->OnClicked.AddUnique(Delegate);
+                }
+
+                UVerticalBox* VBox = CreateFlutterUMGWidget<UVerticalBox>();
+                
+                if (InItems[i].IconImage) {
+                    FSlateBrush Brush;
+                    Brush.SetResourceObject(InItems[i].IconImage);
+                    Brush.ImageSize = FVector2D(CurrentIndex == i ? 26 : 22, CurrentIndex == i ? 26 : 22);
+                    
+                    Image ImgWidget;
+                    ImgWidget.Brush(Brush);
+                    ImgWidget.Color(CurrentIndex == i ? FLinearColor(0.13f, 0.59f, 0.95f, 1.0f) : FLinearColor(0.5f, 0.5f, 0.5f, 1.0f));
+                    
+                    if (UVerticalBoxSlot* VSlot = VBox->AddChildToVerticalBox(ImgWidget.Widget)) {
+                        VSlot->SetHorizontalAlignment(HAlign_Center);
+                    }
+                } else {
+                    UTextBlock* IconTxt = CreateFlutterUMGWidget<UTextBlock>();
+                    IconTxt->SetText(FText::FromString(InItems[i].IconText));
+                    FSlateFontInfo FontInfo = IconTxt->GetFont();
+                    FontInfo.Size = CurrentIndex == i ? 26 : 22; 
+                    IconTxt->SetFont(FontInfo);
+                    IconTxt->SetColorAndOpacity(FSlateColor(CurrentIndex == i ? FLinearColor(0.13f, 0.59f, 0.95f, 1.0f) : FLinearColor(0.5f, 0.5f, 0.5f, 1.0f)));
+                    if (UVerticalBoxSlot* VSlot = VBox->AddChildToVerticalBox(IconTxt)) {
+                        VSlot->SetHorizontalAlignment(HAlign_Center);
+                    }
+                }
+
+                UTextBlock* LabelTxt = CreateFlutterUMGWidget<UTextBlock>();
+                LabelTxt->SetText(FText::FromString(InItems[i].Label));
+                FSlateFontInfo LabelFont = LabelTxt->GetFont();
+                LabelFont.Size = CurrentIndex == i ? 12 : 11; 
+                LabelTxt->SetFont(LabelFont);
+                LabelTxt->SetColorAndOpacity(FSlateColor(CurrentIndex == i ? FLinearColor(0.13f, 0.59f, 0.95f, 1.0f) : FLinearColor(0.5f, 0.5f, 0.5f, 1.0f)));
+                if (UVerticalBoxSlot* VSlot = VBox->AddChildToVerticalBox(LabelTxt)) {
+                    VSlot->SetHorizontalAlignment(HAlign_Center);
+                    VSlot->SetPadding(FMargin(0, 4.f, 0, 0));
+                }
+
+                UBorder* Pad = CreateFlutterUMGWidget<UBorder>();
+                Pad->SetPadding(FMargin(0, 4.f));
+                Pad->SetBrushColor(FLinearColor::Transparent);
+                Pad->AddChild(VBox);
+                Pad->SetHorizontalAlignment(HAlign_Center);
+
+                Btn->AddChild(Pad);
+                ItemContainer->AddChild(Btn);
+                
+                if (UHorizontalBoxSlot* Slot = Widget->AddChildToHorizontalBox(ItemContainer)) {
+                    Slot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+                    Slot->SetHorizontalAlignment(HAlign_Fill);
+                }
+            }
+            return *this;
+        }
+
+        operator UWidget*() const { return Wrapper ? (UWidget*)Wrapper : (UWidget*)Widget; }
     };
 }
