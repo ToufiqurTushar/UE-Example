@@ -94,6 +94,10 @@ namespace Flutter
             ButtonStyle.SetHovered(HoveredBrush);
             ButtonStyle.SetPressed(PressedBrush);
             Widget->SetStyle(ButtonStyle);
+
+            Widget->SetClickMethod(EButtonClickMethod::PreciseClick);
+            Widget->SetTouchMethod(EButtonTouchMethod::PreciseTap);
+            Widget->IsFocusable = false;
         }
         
         ElevatedButton& OnPressed(UObject* Object, FName FuncName) {
@@ -744,6 +748,10 @@ namespace Flutter
                 BtnStyle.Hovered.DrawAs = ESlateBrushDrawType::Box;
                 BtnStyle.Pressed.DrawAs = ESlateBrushDrawType::Box;
                 Btn->SetStyle(BtnStyle);
+
+                Btn->SetClickMethod(EButtonClickMethod::PreciseClick);
+                Btn->SetTouchMethod(EButtonTouchMethod::PreciseTap);
+                Btn->IsFocusable = false;
 
                 if (ContextObject && Callbacks.IsValidIndex(i)) {
                     FScriptDelegate Delegate;

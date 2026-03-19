@@ -16,6 +16,8 @@ UFlutterInkWell::UFlutterInkWell()
 	
 	IsFocusable = false;
 	SetClickMethod(EButtonClickMethod::PreciseClick);
+	SetTouchMethod(EButtonTouchMethod::PreciseTap);
+	SetPressMethod(EButtonPressMethod::DownAndUp);
 }
 
 void UFlutterInkWell::SynchronizeProperties()

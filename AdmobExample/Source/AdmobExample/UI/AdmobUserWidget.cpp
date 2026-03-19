@@ -12,6 +12,11 @@ TSharedRef<SWidget> UAdmobUserWidget::RebuildWidget() {
 
   if (!FlutterTheme::MaterialIconsFont) {
       FlutterTheme::MaterialIconsFont = LoadObject<UFont>(nullptr, TEXT("/Game/Fonts/MaterialIcons-Regular_Font.MaterialIcons-Regular_Font"));
+      if (FlutterTheme::MaterialIconsFont) {
+          UE_LOG(LogTemp, Log, TEXT("AdmobUserWidget: Material Icons Font loaded successfully."));
+      } else {
+          UE_LOG(LogTemp, Error, TEXT("AdmobUserWidget: FAILED to load Material Icons Font from /Game/Fonts/MaterialIcons-Regular_Font"));
+      }
   }
 
   BottomNavigationBar InitialNav;
