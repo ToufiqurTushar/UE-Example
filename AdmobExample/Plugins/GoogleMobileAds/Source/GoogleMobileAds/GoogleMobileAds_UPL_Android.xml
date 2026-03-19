@@ -3,6 +3,7 @@
 	<!-- init section is always evaluated once per architecture -->
 	<init>
 		<log text="GoogleMobileAds Android UPL initialization"/>
+		<setStringFromProperty result="AppIdAndroid" ini="Engine" section="/Script/GoogleMobileAds.GoogleMobileAdsSettings" property="AdMobAppID_Android" default="ca-app-pub-3940256099942544~3347511713"/>
 	</init>
 
 	<!-- optional additions to the GameActivity imports in GameActivity.java -->
@@ -126,7 +127,7 @@ import androidx.annotation.NonNull;
 	<androidManifestUpdates>
 		<addElements tag="application">
 			<!-- Google Mobile Ads Test App ID -->
-			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713"/>
+			<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$S(AppIdAndroid)"/>
 		</addElements>
 	</androidManifestUpdates>
 
