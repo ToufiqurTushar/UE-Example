@@ -3,7 +3,7 @@
 	<!-- init section is always evaluated once per architecture -->
 	<init>
 		<log text="GoogleMobileAds IOS UPL initialization"/>
-		<setStringFromProperty result="AppIdIOS" ini="Engine" section="/Script/GoogleMobileAds.GoogleMobileAdsSettings" property="AdMobAppID_IOS" default="ca-app-pub-3940256099942544~1458002511"/>
+		<setStringFromProperty result="AppIdIOS" ini="Engine" section="/Script/GoogleMobileAds.GoogleMobileAdsRuntimeSettings" property="AdMobAppID_IOS" default="ca-app-pub-3940256099942544~1458002511"/>
 	</init>
 	
 	<!-- iOS Pod modifications -->

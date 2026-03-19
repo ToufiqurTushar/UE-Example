@@ -35,6 +35,8 @@ public class GoogleMobileAds : ModuleRules
 		// iOS specific dependencies
 		if (Target.Platform == UnrealTargetPlatform.IOS)
 		{
+			PCHUsage = ModuleRules.PCHUsageMode.NoSharedPCHs;
+
 			PublicFrameworks.AddRange(
 				new string[]
 				{
@@ -62,6 +64,8 @@ public class GoogleMobileAds : ModuleRules
 			
 			string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
 			AdditionalPropertiesForReceipt.Add("IOSPlugin", Path.Combine(PluginPath, "GoogleMobileAds_UPL_IOS.xml"));
+
+			bEnableObjCAutomaticReferenceCounting = true;
 		}
 	}
 }

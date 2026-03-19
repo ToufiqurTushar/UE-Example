@@ -3,7 +3,7 @@
 	<!-- init section is always evaluated once per architecture -->
 	<init>
 		<log text="GoogleMobileAds Android UPL initialization"/>
-		<setStringFromProperty result="AppIdAndroid" ini="Engine" section="/Script/GoogleMobileAds.GoogleMobileAdsSettings" property="AdMobAppID_Android" default="ca-app-pub-3940256099942544~3347511713"/>
+		<setStringFromProperty result="AppIdAndroid" ini="Engine" section="/Script/GoogleMobileAds.GoogleMobileAdsRuntimeSettings" property="AdMobAppID_Android" default="ca-app-pub-3940256099942544~3347511713"/>
 	</init>
 
 	<!-- optional additions to the GameActivity imports in GameActivity.java -->

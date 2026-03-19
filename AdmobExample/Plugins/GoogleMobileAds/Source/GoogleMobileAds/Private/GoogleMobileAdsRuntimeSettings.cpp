@@ -1,6 +1,6 @@
-#include "GoogleMobileAdsSettings.h"
+#include "GoogleMobileAdsRuntimeSettings.h"
 
-UGoogleMobileAdsSettings::UGoogleMobileAdsSettings(const FObjectInitializer& ObjectInitializer)
+UGoogleMobileAdsRuntimeSettings::UGoogleMobileAdsRuntimeSettings(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
     // Safely defaults to Google's standard test Application IDs

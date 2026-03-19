@@ -1,6 +1,6 @@
 #include "GoogleMobileAdsModule.h"
 
-#include "GoogleMobileAdsSettings.h"
+#include "GoogleMobileAdsRuntimeSettings.h"
 #include "Developer/Settings/Public/ISettingsModule.h"
 
 #define LOCTEXT_NAMESPACE "FGoogleMobileAdsModule"
@@ -12,7 +12,7 @@ void FGoogleMobileAdsModule::StartupModule()
 		SettingsModule->RegisterSettings("Project", "Plugins", "GoogleMobileAds",
 			LOCTEXT("RuntimeSettingsName", "Google Mobile Ads"),
 			LOCTEXT("RuntimeSettingsDescription", "Configure AdMob Application IDs"),
-			GetMutableDefault<UGoogleMobileAdsSettings>()
+			GetMutableDefault<UGoogleMobileAdsRuntimeSettings>()
 		);
 	}
 }
