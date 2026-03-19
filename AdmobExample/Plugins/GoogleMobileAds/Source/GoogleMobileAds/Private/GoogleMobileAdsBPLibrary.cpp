@@ -2,6 +2,9 @@
 #include "Async/Async.h"
 
 FOnUserEarnedRewardDelegate UGoogleMobileAdsBPLibrary::OnUserEarnedReward;
+FOnBannerAdLoadFailedDelegate UGoogleMobileAdsBPLibrary::OnBannerAdLoadFailed;
+FOnAdMobInitializationCompleteDelegate UGoogleMobileAdsBPLibrary::OnAdMobInitializationComplete;
+bool UGoogleMobileAdsBPLibrary::bIsInitialized = false;
 
 #if PLATFORM_ANDROID
 #include "Android/AndroidJNI.h"
@@ -121,5 +124,26 @@ void UGoogleMobileAdsBPLibrary::ShowRewardedAd()
 
 #if PLATFORM_IOS
 	FGoogleMobileAdsIOS::ShowRewardedAd();
+#endif
+}
+
+void UGoogleMobileAdsBPLibrary::LoadBannerAd(const FString& AdUnitID)
+{
+#if PLATFORM_IOS
+	FGoogleMobileAdsIOS::LoadBannerAd(AdUnitID);
+#endif
+}
+
+void UGoogleMobileAdsBPLibrary::ShowBannerAd()
+{
+#if PLATFORM_IOS
+	FGoogleMobileAdsIOS::ShowBannerAd();
+#endif
+}
+
+void UGoogleMobileAdsBPLibrary::HideBannerAd()
+{
+#if PLATFORM_IOS
+	FGoogleMobileAdsIOS::HideBannerAd();
 #endif
 }

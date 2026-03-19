@@ -5,6 +5,8 @@
 #include "GoogleMobileAdsBPLibrary.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnUserEarnedRewardDelegate);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnBannerAdLoadFailedDelegate, const FString& /* ErrorMessage */);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnAdMobInitializationCompleteDelegate, bool /* bSuccess */, const FString& /* ErrorMessage */);
 
 /**
  * A simple Blueprint Function Library exposing Google Mobile Ads initialization
@@ -17,6 +19,13 @@ class GOOGLEMOBILEADS_API UGoogleMobileAdsBPLibrary : public UBlueprintFunctionL
 
 public:
 	static FOnUserEarnedRewardDelegate OnUserEarnedReward;
+	static FOnBannerAdLoadFailedDelegate OnBannerAdLoadFailed;
+	static FOnAdMobInitializationCompleteDelegate OnAdMobInitializationComplete;
+
+    static bool bIsInitialized;
+
+    UFUNCTION(BlueprintCallable, Category = "GoogleMobileAds")
+    static bool IsAdMobInitialized() { return bIsInitialized; }
 
 	/** Sets test device IDs for the Ad Requests */
 	UFUNCTION(BlueprintCallable, Category = "GoogleMobileAds")
@@ -41,4 +50,16 @@ public:
 	/** Shows the previously loaded Rewarded Ad */
 	UFUNCTION(BlueprintCallable, Category = "GoogleMobileAds")
 	static void ShowRewardedAd();
+
+	/** Loads a Banner Ad with a specific Ad Unit ID */
+	UFUNCTION(BlueprintCallable, Category = "GoogleMobileAds")
+	static void LoadBannerAd(const FString& AdUnitID);
+
+	/** Shows the previously loaded Banner Ad */
+	UFUNCTION(BlueprintCallable, Category = "GoogleMobileAds")
+	static void ShowBannerAd();
+
+	/** Hides the currently showing Banner Ad */
+	UFUNCTION(BlueprintCallable, Category = "GoogleMobileAds")
+	static void HideBannerAd();
 };

@@ -21,6 +21,14 @@
 			"TargetAllowList": [
 				"Editor"
 			]
+		},
+		{
+			"Name": "GoogleMobileAds",
+			"Enabled": true
+		},
+		{
+			"Name": "FlutterUMG",
+			"Enabled": true
 		}
 	]
 }

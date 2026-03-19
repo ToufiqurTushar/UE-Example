@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 
 #if PLATFORM_IOS
-class FGoogleMobileAdsIOS
+class GOOGLEMOBILEADS_API FGoogleMobileAdsIOS
 {
 public:
 	static void InitializeAdMob();
@@ -11,5 +11,8 @@ public:
 	static void ShowInterstitialAd();
 	static void LoadRewardedAd(const FString& AdUnitID);
 	static void ShowRewardedAd();
+	static void LoadBannerAd(const FString& AdUnitID);
+	static void ShowBannerAd();
+	static void HideBannerAd();
 };
 #endif

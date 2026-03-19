@@ -39,12 +39,23 @@ private:
     UWidget* BuildAboutPage();
 
 	void HandleRewardEarned();
+	void HandleBannerAdLoadFailed(const FString& ErrorMessage);
+	void HandleInitializationComplete(bool bSuccess, const FString& ErrorMessage);
+
+	UFUNCTION()
+	void OnCheckInitClicked();
 
 	UFUNCTION()
 	void OnShowInterstitialClicked();
 
 	UFUNCTION()
 	void OnShowRewardedClicked();
+
+	UFUNCTION()
+	void OnShowBannerClicked();
+
+	UFUNCTION()
+	void OnHideBannerClicked();
 
     UPROPERTY()
     UCanvasPanel* Root;

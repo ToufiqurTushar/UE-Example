@@ -73,7 +73,19 @@ UWidget* UAdmobUserWidget::BuildAdsPage() {
                   SizedBox(1.0f, 20.0f),
                   ElevatedButton()
                       .OnPressed(this, TEXT("OnShowRewardedClicked"))
-                      .Child(Text(TEXT("Show Rewarded")))
+                      .Child(Text(TEXT("Show Rewarded"))),
+                  SizedBox(1.0f, 20.0f),
+                  ElevatedButton()
+                      .OnPressed(this, TEXT("OnShowBannerClicked"))
+                      .Child(Text(TEXT("Show Banner"))),
+                  SizedBox(1.0f, 10.0f),
+                  ElevatedButton()
+                      .OnPressed(this, TEXT("OnHideBannerClicked"))
+                      .Child(Text(TEXT("Hide Banner"))),
+                  SizedBox(1.0f, 10.0f),
+                  ElevatedButton()
+                      .OnPressed(this, TEXT("OnCheckInitClicked"))
+                      .Child(Text(TEXT("Check Initialization")))
               ))
           ));
 }
@@ -126,22 +138,48 @@ void UAdmobUserWidget::OnShowRewardedClicked() {
   UGoogleMobileAdsBPLibrary::ShowRewardedAd();
 }
 
+void UAdmobUserWidget::OnShowBannerClicked() {
+    Fluttertoast::showToast(this, Root, TEXT("Showing Banner Ad..."));
+    UGoogleMobileAdsBPLibrary::ShowBannerAd();
+}
+
+void UAdmobUserWidget::OnHideBannerClicked() {
+    Fluttertoast::showToast(this, Root, TEXT("Hiding Banner Ad..."));
+    UGoogleMobileAdsBPLibrary::HideBannerAd();
+}
+
 void UAdmobUserWidget::NativeConstruct() {
   Super::NativeConstruct();
   UGoogleMobileAdsBPLibrary::OnUserEarnedReward.AddUObject(
       this, &UAdmobUserWidget::HandleRewardEarned);
+  UGoogleMobileAdsBPLibrary::OnBannerAdLoadFailed.AddUObject(
+      this, &UAdmobUserWidget::HandleBannerAdLoadFailed);
+  UGoogleMobileAdsBPLibrary::OnAdMobInitializationComplete.AddUObject(
+      this, &UAdmobUserWidget::HandleInitializationComplete);
 
   // Demonstrate the new Toast system
-  Fluttertoast::showToast(this, Root, TEXT("AdMob Initialized!"));
+  if (UGoogleMobileAdsBPLibrary::IsAdMobInitialized()) {
+      Fluttertoast::showToast(this, Root, TEXT("AdMob Initialized!"));
+  } else {
+      Fluttertoast::showToast(this, Root, TEXT("AdMob Initializing..."));
+  }
 
   // Pre-load the ads using the actual test IDs found in the Flutter app
   UGoogleMobileAdsBPLibrary::LoadInterstitialAd(
       TEXT("ca-app-pub-3940256099942544/1033173712"));
   UGoogleMobileAdsBPLibrary::LoadRewardedAd(
       TEXT("ca-app-pub-3940256099942544/5224354917"));
+  
+  // Show Banner Ad on initialization
+  UGoogleMobileAdsBPLibrary::LoadBannerAd(
+      TEXT("ca-app-pub-3940256099942544/2934735716"));
+  UGoogleMobileAdsBPLibrary::ShowBannerAd();
 }
 
 void UAdmobUserWidget::NativeDestruct() {
+  UGoogleMobileAdsBPLibrary::OnAdMobInitializationComplete.RemoveAll(this);
+  UGoogleMobileAdsBPLibrary::OnBannerAdLoadFailed.RemoveAll(this);
+  UGoogleMobileAdsBPLibrary::HideBannerAd();
   UGoogleMobileAdsBPLibrary::OnUserEarnedReward.RemoveAll(this);
   Super::NativeDestruct();
 }
@@ -155,4 +193,27 @@ void UAdmobUserWidget::HandleRewardEarned() {
         FText::FromString(TEXT("You earned 10 points!")));
     BannerPlaceholder->SetColorAndOpacity(FSlateColor(FLinearColor::Green));
   }
+}
+
+void UAdmobUserWidget::HandleBannerAdLoadFailed(const FString& ErrorMessage) {
+    FString ToastMsg = FString::Printf(TEXT("Banner Load Failed: %s"), *ErrorMessage);
+    Fluttertoast::showToast(this, Root, ToastMsg);
+}
+
+void UAdmobUserWidget::HandleInitializationComplete(bool bSuccess, const FString& ErrorMessage) {
+    if (bSuccess) {
+        Fluttertoast::showToast(this, Root, TEXT("AdMob Initialized Successfully!"));
+    } else {
+        FString ToastMsg = FString::Printf(TEXT("AdMob Init FAILED: %s"), *ErrorMessage);
+        Fluttertoast::showToast(this, Root, ToastMsg);
+    }
+}
+
+void UAdmobUserWidget::OnCheckInitClicked() {
+    if (UGoogleMobileAdsBPLibrary::IsAdMobInitialized()) {
+        Fluttertoast::showToast(this, Root, TEXT("AdMob is already INITIALIZED."));
+    } else {
+        Fluttertoast::showToast(this, Root, TEXT("AdMob not initialized. Retrying..."));
+        UGoogleMobileAdsBPLibrary::InitializeAdMob();
+    }
 }
