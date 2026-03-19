@@ -4,6 +4,7 @@
 #include "FlutterBuildContext.h"
 #include "Components/TextBlock.h"
 #include "Components/Button.h"
+#include "Components/ButtonSlot.h"
 #include "Components/Spacer.h"
 #include "Components/VerticalBox.h"
 #include "Components/HorizontalBox.h"
@@ -27,6 +28,7 @@
 #include "Components/WidgetSwitcher.h"
 #include "Engine/Font.h"
 #include "Brushes/SlateRoundedBoxBrush.h"
+#include "FlutterInkWell.h"
 
 namespace Flutter
 {
@@ -822,5 +824,42 @@ namespace Flutter
         }
 
         operator UWidget*() const { return Wrapper ? (UWidget*)Wrapper : (UWidget*)Widget; }
+    };
+
+    struct InkWell
+    {
+        UFlutterInkWell* Widget;
+        InkWell() {
+            Widget = CreateFlutterUMGWidget<UFlutterInkWell>();
+        }
+
+        InkWell& OnTap(UObject* Object, FName FuncName) {
+            FScriptDelegate Delegate;
+            Delegate.BindUFunction(Object, FuncName);
+            Widget->OnClicked.AddUnique(Delegate);
+            return *this;
+        }
+
+        InkWell& OnTap(UObject* Object, FName FuncName, int32 Index) {
+            Widget->Index = Index;
+            FScriptDelegate Delegate;
+            Delegate.BindUFunction(Object, FuncName);
+            Widget->OnInkWellClicked.AddUnique(Delegate);
+            return *this;
+        }
+
+        InkWell& Child(UWidget* InChild) {
+            if (InChild) {
+                Widget->AddChild(InChild);
+                if (auto* Slot = Cast<UButtonSlot>(InChild->Slot))
+                {
+                    Slot->SetHorizontalAlignment(HAlign_Fill);
+                    Slot->SetVerticalAlignment(VAlign_Fill);
+                    Slot->SetPadding(FMargin(0.0f));
+                }
+            }
+            return *this;
+        }
+        operator UWidget*() const { return Widget; }
     };
 }

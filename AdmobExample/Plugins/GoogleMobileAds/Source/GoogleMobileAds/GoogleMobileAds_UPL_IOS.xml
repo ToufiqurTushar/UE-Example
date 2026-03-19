@@ -13,6 +13,12 @@
 		</insert>
 	</iosPodfileUpdates>
 
+	<iosLinkerUpdates>
+		<insert>
+			<arg>-ObjC</arg>
+		</insert>
+	</iosLinkerUpdates>
+
 	<iosPListUpdates>
 		<addElements tag="dict">
 			<key>GADApplicationIdentifier</key>

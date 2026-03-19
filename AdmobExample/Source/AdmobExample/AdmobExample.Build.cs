@@ -9,6 +9,8 @@ public class AdmobExample : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "GoogleMobileAds", "FlutterUMG" });
+		
+		PublicIncludePaths.AddRange(new string[] { "AdmobExample", "AdmobExample/Core", "AdmobExample/UI" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "UMG", "Slate", "SlateCore" });
 

@@ -46,6 +46,9 @@ private:
 	void OnCheckInitClicked();
 
 	UFUNCTION()
+    void OnListItemClicked(int32 Index);
+
+	UFUNCTION()
 	void OnShowInterstitialClicked();
 
 	UFUNCTION()
