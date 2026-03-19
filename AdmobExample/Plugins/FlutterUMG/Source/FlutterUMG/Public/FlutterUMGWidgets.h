@@ -25,9 +25,23 @@
 #include "Fonts/SlateFontInfo.h"
 #include "Styling/SlateTypes.h"
 #include "Components/WidgetSwitcher.h"
+#include "Engine/Font.h"
+#include "Brushes/SlateRoundedBoxBrush.h"
 
 namespace Flutter
 {
+    namespace Icons {
+        const FString Home = TEXT("\ue88a");
+        const FString Settings = TEXT("\ue8b8");
+        const FString Person = TEXT("\ue7fd"); 
+        const FString List = TEXT("\ue896"); 
+        const FString Info = TEXT("\ue88e"); 
+        const FString Tv = TEXT("\ue323"); 
+    }
+
+    struct FlutterTheme {
+        static inline UFont* MaterialIconsFont = nullptr;
+    };
     struct Text
     {
         UTextBlock* Widget;
@@ -737,6 +751,17 @@ namespace Flutter
 
                 UVerticalBox* VBox = CreateFlutterUMGWidget<UVerticalBox>();
                 
+                UBorder* IconBg = CreateFlutterUMGWidget<UBorder>();
+                IconBg->SetPadding(FMargin(16.f, 4.f));
+                IconBg->SetHorizontalAlignment(HAlign_Center);
+                IconBg->SetVerticalAlignment(VAlign_Center);
+                
+                if (CurrentIndex == i) {
+                    IconBg->SetBrush(FSlateRoundedBoxBrush(FLinearColor(0.9f, 0.9f, 0.9f, 1.0f), 16.0f));
+                } else {
+                    IconBg->SetBrushColor(FLinearColor::Transparent);
+                }
+
                 if (InItems[i].IconImage) {
                     FSlateBrush Brush;
                     Brush.SetResourceObject(InItems[i].IconImage);
@@ -746,19 +771,26 @@ namespace Flutter
                     ImgWidget.Brush(Brush);
                     ImgWidget.Color(CurrentIndex == i ? FLinearColor(0.13f, 0.59f, 0.95f, 1.0f) : FLinearColor(0.5f, 0.5f, 0.5f, 1.0f));
                     
-                    if (UVerticalBoxSlot* VSlot = VBox->AddChildToVerticalBox(ImgWidget.Widget)) {
-                        VSlot->SetHorizontalAlignment(HAlign_Center);
-                    }
+                    IconBg->AddChild(ImgWidget.Widget);
                 } else {
                     UTextBlock* IconTxt = CreateFlutterUMGWidget<UTextBlock>();
                     IconTxt->SetText(FText::FromString(InItems[i].IconText));
                     FSlateFontInfo FontInfo = IconTxt->GetFont();
+                    
+                    if (FlutterTheme::MaterialIconsFont) {
+                        FontInfo.FontObject = FlutterTheme::MaterialIconsFont;
+                        FontInfo.CompositeFont = nullptr;
+                    }
+                    
                     FontInfo.Size = CurrentIndex == i ? 26 : 22; 
                     IconTxt->SetFont(FontInfo);
                     IconTxt->SetColorAndOpacity(FSlateColor(CurrentIndex == i ? FLinearColor(0.13f, 0.59f, 0.95f, 1.0f) : FLinearColor(0.5f, 0.5f, 0.5f, 1.0f)));
-                    if (UVerticalBoxSlot* VSlot = VBox->AddChildToVerticalBox(IconTxt)) {
-                        VSlot->SetHorizontalAlignment(HAlign_Center);
-                    }
+                    
+                    IconBg->AddChild(IconTxt);
+                }
+                
+                if (UVerticalBoxSlot* VSlot = VBox->AddChildToVerticalBox(IconBg)) {
+                    VSlot->SetHorizontalAlignment(HAlign_Center);
                 }
 
                 UTextBlock* LabelTxt = CreateFlutterUMGWidget<UTextBlock>();

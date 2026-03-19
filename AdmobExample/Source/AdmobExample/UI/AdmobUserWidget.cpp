@@ -9,6 +9,10 @@ using namespace Flutter;
 TSharedRef<SWidget> UAdmobUserWidget::RebuildWidget() {
   FFlutterBuildContext Context(this);
 
+  if (!FlutterTheme::MaterialIconsFont) {
+      FlutterTheme::MaterialIconsFont = LoadObject<UFont>(nullptr, TEXT("/Game/Fonts/MaterialIcons-Regular_Font.MaterialIcons-Regular_Font"));
+  }
+
   BottomNavigationBar InitialNav;
   BottomNavBar = InitialNav.Widget;
 
@@ -45,11 +49,11 @@ void UAdmobUserWidget::SwitchTab(int32 Index) {
     if (BottomNavBar) {
         BottomNavigationBar NavView(BottomNavBar);
         NavView.Items({
-            BottomNavigationBarItem(TEXT("▶"), TEXT("Ads")),
-            BottomNavigationBarItem(TEXT("☰"), TEXT("List")),
-            BottomNavigationBarItem(TEXT("◉"), TEXT("Profile")),
-            BottomNavigationBarItem(TEXT("⊛"), TEXT("Settings")),
-            BottomNavigationBarItem(TEXT("ℹ"), TEXT("About"))
+            BottomNavigationBarItem(Icons::Tv, TEXT("Ads")),
+            BottomNavigationBarItem(Icons::List, TEXT("List")),
+            BottomNavigationBarItem(Icons::Person, TEXT("Profile")),
+            BottomNavigationBarItem(Icons::Settings, TEXT("Settings")),
+            BottomNavigationBarItem(Icons::Info, TEXT("About"))
         }, this, {TEXT("OnTab0Clicked"), TEXT("OnTab1Clicked"), TEXT("OnTab2Clicked"), TEXT("OnTab3Clicked"), TEXT("OnTab4Clicked")}, CurrentTabIndex);
     }
 }
