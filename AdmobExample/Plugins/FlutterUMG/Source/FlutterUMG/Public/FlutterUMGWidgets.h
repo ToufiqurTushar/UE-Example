@@ -788,8 +788,14 @@ namespace Flutter
                     FSlateFontInfo FontInfo = IconTxt->GetFont();
                     
                     if (FlutterTheme::MaterialIconsFont) {
+                        float Size = CurrentIndex == i ? 26 : 22;
+#if PLATFORM_IOS
+                        // On iOS, the constructor is required to correctly initialize the composite font
+                        FontInfo = FSlateFontInfo(FlutterTheme::MaterialIconsFont, Size);
+#else
                         FontInfo.FontObject = FlutterTheme::MaterialIconsFont;
                         FontInfo.CompositeFont = nullptr;
+#endif
                     }
                     
                     FontInfo.Size = CurrentIndex == i ? 26 : 22; 
