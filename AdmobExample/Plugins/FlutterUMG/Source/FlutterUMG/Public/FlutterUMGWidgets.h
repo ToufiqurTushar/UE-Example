@@ -527,6 +527,14 @@ namespace Flutter
             RowStyle.OddRowBackgroundBrush.SetResourceObject(nullptr);
             RowStyle.OddRowBackgroundBrush.TintColor = FSlateColor(FLinearColor::White);
             
+            RowStyle.EvenRowBackgroundHoveredBrush.DrawAs = ESlateBrushDrawType::Image;
+            RowStyle.EvenRowBackgroundHoveredBrush.SetResourceObject(nullptr);
+            RowStyle.EvenRowBackgroundHoveredBrush.TintColor = FSlateColor(FLinearColor(0.9f, 0.9f, 0.9f, 1.0f));
+            
+            RowStyle.OddRowBackgroundHoveredBrush.DrawAs = ESlateBrushDrawType::Image;
+            RowStyle.OddRowBackgroundHoveredBrush.SetResourceObject(nullptr);
+            RowStyle.OddRowBackgroundHoveredBrush.TintColor = FSlateColor(FLinearColor(0.9f, 0.9f, 0.9f, 1.0f));
+            
             RowStyle.TextColor = FSlateColor(FLinearColor::Black);
             RowStyle.SelectedTextColor = FSlateColor(FLinearColor::White);
             Widget->SetItemStyle(RowStyle);
