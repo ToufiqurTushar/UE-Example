@@ -11,6 +11,29 @@ protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 public:
 	UFUNCTION() void OnBackClicked();
-	UFUNCTION() void OnTextChanged(const FText& Text);
+	UFUNCTION() void OnNameChanged(const FText& Text);
+    UFUNCTION() void OnEmailChanged(const FText& Text);
+    UFUNCTION() void OnPasswordChanged(const FText& Text);
+    UFUNCTION() void OnTermsChanged(bool bIsChecked);
+    
+    UFUNCTION() void OnGenderMaleChanged(bool bIsChecked);
+    UFUNCTION() void OnGenderFemaleChanged(bool bIsChecked);
+    
+    UFUNCTION() void OnCountryChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
+    
+    UFUNCTION() void OnSkillCppChanged(bool bIsChecked);
+    UFUNCTION() void OnSkillUEChanged(bool bIsChecked);
+
     UFUNCTION() void OnSubmitClicked();
+
+private:
+    FString NameStr;
+    FString EmailStr;
+    FString PasswordStr;
+    bool bTermsAccepted = false;
+    
+    FString GenderStr = TEXT("Male");
+    FString CountryStr = TEXT("USA");
+    bool bSkillCpp = false;
+    bool bSkillUE = false;
 };

@@ -19,6 +19,8 @@
 #include "Components/Image.h"
 #include "Components/EditableTextBox.h"
 #include "Components/ScrollBox.h"
+#include "Components/CheckBox.h"
+#include "Components/ComboBoxString.h"
 #include "Components/SizeBox.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
@@ -380,7 +382,7 @@ namespace Flutter
             FEditableTextBoxStyle Style = Widget->WidgetStyle;
             
             Style.BackgroundImageNormal.DrawAs = ESlateBrushDrawType::RoundedBox;
-            Style.BackgroundImageNormal.OutlineSettings.CornerRadii = FVector4(4,4,4,4);
+            Style.BackgroundImageNormal.OutlineSettings.CornerRadii = FVector4(16,16,16,16);
             Style.BackgroundImageNormal.TintColor = FSlateColor(FLinearColor(0.96f, 0.96f, 0.96f, 1.0f)); 
             
             Style.BackgroundImageHovered = Style.BackgroundImageNormal;
@@ -399,6 +401,10 @@ namespace Flutter
 			Widget->SetText(FText::FromString(InText));
 			return *this;
 		}
+        TextField& IsPassword(bool bIsPassword) {
+            Widget->SetIsPassword(bIsPassword);
+            return *this;
+        }
 		TextField& OnChanged(UObject* Object, FName FuncName) {
             FScriptDelegate Delegate;
             Delegate.BindUFunction(Object, FuncName);
@@ -407,6 +413,69 @@ namespace Flutter
         }
 		operator UWidget*() const { return Widget; }
 	};
+
+    struct Checkbox
+    {
+        ::UCheckBox* Widget;
+        Checkbox() {
+            Widget = CreateFlutterUMGWidget<::UCheckBox>();
+        }
+        Checkbox& IsChecked(bool bChecked) {
+            Widget->SetIsChecked(bChecked);
+            return *this;
+        }
+        Checkbox& OnChanged(UObject* Object, FName FuncName) {
+            FScriptDelegate Delegate;
+            Delegate.BindUFunction(Object, FuncName);
+            Widget->OnCheckStateChanged.AddUnique(Delegate);
+            return *this;
+        }
+        operator UWidget*() const { return Widget; }
+    };
+
+    struct Radio
+    {
+        ::UCheckBox* Widget;
+        Radio() {
+            Widget = CreateFlutterUMGWidget<::UCheckBox>();
+        }
+        Radio& IsChecked(bool bChecked) {
+            Widget->SetIsChecked(bChecked);
+            return *this;
+        }
+        Radio& OnChanged(UObject* Object, FName FuncName) {
+            FScriptDelegate Delegate;
+            Delegate.BindUFunction(Object, FuncName);
+            Widget->OnCheckStateChanged.AddUnique(Delegate);
+            return *this;
+        }
+        operator UWidget*() const { return Widget; }
+    };
+
+    struct DropdownList
+    {
+        UComboBoxString* Widget;
+        DropdownList() {
+            Widget = CreateFlutterUMGWidget<UComboBoxString>();
+        }
+        DropdownList& Options(const TArray<FString>& InOptions) {
+            for (const FString& Option : InOptions) {
+                Widget->AddOption(Option);
+            }
+            return *this;
+        }
+        DropdownList& Selected(const FString& SelectedOption) {
+            if (Widget) Widget->SetSelectedOption(SelectedOption);
+            return *this;
+        }
+        DropdownList& OnChanged(UObject* Object, FName FuncName) {
+            FScriptDelegate Delegate;
+            Delegate.BindUFunction(Object, FuncName);
+            if (Widget) Widget->OnSelectionChanged.AddUnique(Delegate);
+            return *this;
+        }
+        operator UWidget*() const { return Widget; }
+    };
 
     struct Card
     {
