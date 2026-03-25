@@ -9,6 +9,7 @@
 #include "Components/VerticalBox.h"
 #include "Components/CanvasPanel.h"
 #include "Widgets/SWidget.h"
+#include "ProfileSaveGame.h"
 
 #include "AdmobUserWidget.generated.h"
 
@@ -37,6 +38,42 @@ private:
     UWidget* BuildProfilePage();
     UWidget* BuildSettingsPage();
     UWidget* BuildAboutPage();
+
+    UFUNCTION()
+    void OnEditProfileClicked();
+
+    UFUNCTION()
+    void OnSaveProfileClicked();
+
+    UFUNCTION()
+    void OnNameChanged(const FText& Text);
+
+    UFUNCTION()
+    void OnEmailChanged(const FText& Text);
+
+    UFUNCTION()
+    void OnBioChanged(const FText& Text);
+
+    UWidget* BuildProfileViewPage();
+    UWidget* BuildProfileEditPage();
+
+    void LoadProfile();
+
+    FString CurrentName;
+    FString CurrentEmail;
+    FString CurrentBio;
+
+    UPROPERTY()
+    class UWidgetSwitcher* ProfileSwitcher;
+
+    UPROPERTY()
+    class UTextBlock* ProfileNameText;
+
+    UPROPERTY()
+    class UTextBlock* ProfileEmailText;
+
+    UPROPERTY()
+    class UTextBlock* ProfileBioText;
 
 	void HandleRewardEarned();
 	void HandleBannerAdLoadFailed(const FString& ErrorMessage);
