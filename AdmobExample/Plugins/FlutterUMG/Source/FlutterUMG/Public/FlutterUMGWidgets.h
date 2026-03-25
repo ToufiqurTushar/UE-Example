@@ -382,13 +382,22 @@ namespace Flutter
             FEditableTextBoxStyle Style = Widget->WidgetStyle;
             
             Style.BackgroundImageNormal.DrawAs = ESlateBrushDrawType::RoundedBox;
+            Style.BackgroundImageNormal.SetResourceObject(nullptr);
             Style.BackgroundImageNormal.OutlineSettings.CornerRadii = FVector4(16,16,16,16);
-            Style.BackgroundImageNormal.TintColor = FSlateColor(FLinearColor(0.96f, 0.96f, 0.96f, 1.0f)); 
+            Style.BackgroundImageNormal.OutlineSettings.Width = 1.0f;
+            Style.BackgroundImageNormal.OutlineSettings.Color = FSlateColor(FLinearColor::Gray);
+            Style.BackgroundImageNormal.TintColor = FSlateColor(FLinearColor(0.98f, 0.98f, 0.98f, 1.0f)); 
             
             Style.BackgroundImageHovered = Style.BackgroundImageNormal;
-            Style.BackgroundImageHovered.TintColor = FSlateColor(FLinearColor(0.93f, 0.93f, 0.93f, 1.0f)); 
+            Style.BackgroundImageHovered.SetResourceObject(nullptr);
+            Style.BackgroundImageHovered.OutlineSettings.Width = 1.5f;
+            Style.BackgroundImageHovered.OutlineSettings.Color = FSlateColor(FLinearColor(0.1f, 0.5f, 0.9f, 1.0f));
+            Style.BackgroundImageHovered.TintColor = FSlateColor(FLinearColor(0.95f, 0.95f, 0.95f, 1.0f)); 
             
             Style.BackgroundImageFocused = Style.BackgroundImageNormal;
+            Style.BackgroundImageFocused.SetResourceObject(nullptr);
+            Style.BackgroundImageFocused.OutlineSettings.Width = 2.0f;
+            Style.BackgroundImageFocused.OutlineSettings.Color = FSlateColor(FLinearColor(0.1f, 0.5f, 0.9f, 1.0f));
             Style.BackgroundImageFocused.TintColor = FSlateColor(FLinearColor(0.90f, 0.90f, 0.90f, 1.0f)); 
 
             Widget->WidgetStyle = Style;
@@ -460,19 +469,64 @@ namespace Flutter
             
             // Style the Dropdown Button
             FComboBoxStyle Style = Widget->GetWidgetStyle();
+            
+            Style.ComboButtonStyle.ButtonStyle.Normal.DrawAs = ESlateBrushDrawType::RoundedBox;
+            Style.ComboButtonStyle.ButtonStyle.Normal.SetResourceObject(nullptr);
+            Style.ComboButtonStyle.ButtonStyle.Normal.OutlineSettings.CornerRadii = FVector4(16,16,16,16);
+            Style.ComboButtonStyle.ButtonStyle.Normal.OutlineSettings.Width = 1.0f;
+            Style.ComboButtonStyle.ButtonStyle.Normal.OutlineSettings.Color = FSlateColor(FLinearColor::Gray);
             Style.ComboButtonStyle.ButtonStyle.Normal.TintColor = FSlateColor(FLinearColor::White);
-            Style.ComboButtonStyle.ButtonStyle.Hovered.TintColor = FSlateColor(FLinearColor(0.9f, 0.9f, 0.9f, 1.0f));
-            Style.ComboButtonStyle.ButtonStyle.Pressed.TintColor = FSlateColor(FLinearColor(0.8f, 0.8f, 0.8f, 1.0f));
+            
+            Style.ComboButtonStyle.ButtonStyle.Hovered.DrawAs = ESlateBrushDrawType::RoundedBox;
+            Style.ComboButtonStyle.ButtonStyle.Hovered.SetResourceObject(nullptr);
+            Style.ComboButtonStyle.ButtonStyle.Hovered.OutlineSettings.CornerRadii = FVector4(16,16,16,16);
+            Style.ComboButtonStyle.ButtonStyle.Hovered.OutlineSettings.Width = 1.5f;
+            Style.ComboButtonStyle.ButtonStyle.Hovered.OutlineSettings.Color = FSlateColor(FLinearColor(0.1f, 0.5f, 0.9f, 1.0f));
+            Style.ComboButtonStyle.ButtonStyle.Hovered.TintColor = FSlateColor(FLinearColor(0.95f, 0.95f, 0.95f, 1.0f));
+
+            Style.ComboButtonStyle.ButtonStyle.Pressed.DrawAs = ESlateBrushDrawType::RoundedBox;
+            Style.ComboButtonStyle.ButtonStyle.Pressed.SetResourceObject(nullptr);
+            Style.ComboButtonStyle.ButtonStyle.Pressed.OutlineSettings.CornerRadii = FVector4(16,16,16,16);
+            Style.ComboButtonStyle.ButtonStyle.Pressed.OutlineSettings.Width = 2.0f;
+            Style.ComboButtonStyle.ButtonStyle.Pressed.OutlineSettings.Color = FSlateColor(FLinearColor(0.1f, 0.5f, 0.9f, 1.0f));
+            Style.ComboButtonStyle.ButtonStyle.Pressed.TintColor = FSlateColor(FLinearColor(0.9f, 0.9f, 0.9f, 1.0f));
+            
+            // Style the Popup Menu Background (The Dropdown List bounds)
+            Style.ComboButtonStyle.MenuBorderBrush.DrawAs = ESlateBrushDrawType::Image;
+            Style.ComboButtonStyle.MenuBorderBrush.SetResourceObject(nullptr);
+            Style.ComboButtonStyle.MenuBorderBrush.TintColor = FSlateColor(FLinearColor::White);
+
+            Style.MenuRowPadding = FMargin(16.f, 0.f);
+
             Widget->SetWidgetStyle(Style);
 
             // Style the Popup Menu Items
             FTableRowStyle RowStyle = Widget->GetItemStyle();
+            
+            RowStyle.ActiveBrush.DrawAs = ESlateBrushDrawType::Image;
+            RowStyle.ActiveBrush.SetResourceObject(nullptr);
             RowStyle.ActiveBrush.TintColor = FSlateColor(FLinearColor(0.1f, 0.5f, 0.9f, 1.0f)); // Selected Blue
+            
+            RowStyle.ActiveHoveredBrush.DrawAs = ESlateBrushDrawType::Image;
+            RowStyle.ActiveHoveredBrush.SetResourceObject(nullptr);
             RowStyle.ActiveHoveredBrush.TintColor = FSlateColor(FLinearColor(0.2f, 0.6f, 1.0f, 1.0f));
+            
+            RowStyle.InactiveBrush.DrawAs = ESlateBrushDrawType::Image;
+            RowStyle.InactiveBrush.SetResourceObject(nullptr);
             RowStyle.InactiveBrush.TintColor = FSlateColor(FLinearColor::White);
+            
+            RowStyle.InactiveHoveredBrush.DrawAs = ESlateBrushDrawType::Image;
+            RowStyle.InactiveHoveredBrush.SetResourceObject(nullptr);
             RowStyle.InactiveHoveredBrush.TintColor = FSlateColor(FLinearColor(0.9f, 0.9f, 0.9f, 1.0f));
+            
+            RowStyle.EvenRowBackgroundBrush.DrawAs = ESlateBrushDrawType::Image;
+            RowStyle.EvenRowBackgroundBrush.SetResourceObject(nullptr);
             RowStyle.EvenRowBackgroundBrush.TintColor = FSlateColor(FLinearColor::White);
+            
+            RowStyle.OddRowBackgroundBrush.DrawAs = ESlateBrushDrawType::Image;
+            RowStyle.OddRowBackgroundBrush.SetResourceObject(nullptr);
             RowStyle.OddRowBackgroundBrush.TintColor = FSlateColor(FLinearColor::White);
+            
             RowStyle.TextColor = FSlateColor(FLinearColor::Black);
             RowStyle.SelectedTextColor = FSlateColor(FLinearColor::White);
             Widget->SetItemStyle(RowStyle);
