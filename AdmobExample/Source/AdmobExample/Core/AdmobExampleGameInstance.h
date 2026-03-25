@@ -4,7 +4,7 @@
 #include "Engine/GameInstance.h"
 #include "AdmobExampleGameInstance.generated.h"
 
-class UAdmobUserWidget;
+class UHomePageWidget;
 class UCanvasPanel;
 
 /**
@@ -21,10 +21,10 @@ public:
 	UFUNCTION()
 	void HandleAdMobInitializationComplete(bool bSuccess, const FString& ErrorMessage);
 
-	void SetMainWidget(UAdmobUserWidget* InWidget, UCanvasPanel* InRoot) { MainWidget = InWidget; RootCanvas = InRoot; }
+	void SetMainWidget(UHomePageWidget* InWidget, UCanvasPanel* InRoot);
 	void ShowToast(const FString& Message);
 
 private:
-	TWeakObjectPtr<UAdmobUserWidget> MainWidget;
+	TWeakObjectPtr<UHomePageWidget> MainWidget;
 	TWeakObjectPtr<UCanvasPanel> RootCanvas;
 };

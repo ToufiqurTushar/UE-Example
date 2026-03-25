@@ -1,7 +1,7 @@
 #include "AdmobExampleGameInstance.h"
 #include "GoogleMobileAdsBPLibrary.h"
 #include "FlutterUMGWidgets.h"
-#include "AdmobUserWidget.h"
+#include "HomePageWidget.h"
 
 void UAdmobExampleGameInstance::Init()
 {
@@ -36,4 +36,10 @@ void UAdmobExampleGameInstance::ShowToast(const FString& Message)
 	{
 		Flutter::Fluttertoast::showToast(MainWidget.Get(), RootCanvas.Get(), Message);
 	}
+}
+
+void UAdmobExampleGameInstance::SetMainWidget(UHomePageWidget* InWidget, UCanvasPanel* InRoot)
+{
+	MainWidget = InWidget;
+	RootCanvas = InRoot;
 }

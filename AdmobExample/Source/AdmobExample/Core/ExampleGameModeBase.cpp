@@ -1,6 +1,6 @@
 #include "ExampleGameModeBase.h"
 
-#include "../UI/AdmobUserWidget.h"
+#include "../UI/HomePageWidget.h"
 #include "Blueprint/UserWidget.h"
 
 void AExampleGameModeBase::BeginPlay() {
@@ -9,7 +9,7 @@ void AExampleGameModeBase::BeginPlay() {
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
 	if (PC)
 	{
-		auto* AdmobWidgetInstance = CreateWidget<UUserWidget>(PC, UAdmobUserWidget::StaticClass());
+		auto* AdmobWidgetInstance = CreateWidget<UUserWidget>(PC, UHomePageWidget::StaticClass());
 		if (AdmobWidgetInstance)
 		{
 			AdmobWidgetInstance->AddToViewport();
