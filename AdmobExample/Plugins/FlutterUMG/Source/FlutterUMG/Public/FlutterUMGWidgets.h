@@ -97,7 +97,9 @@ namespace Flutter
 
             Widget->SetClickMethod(EButtonClickMethod::PreciseClick);
             Widget->SetTouchMethod(EButtonTouchMethod::PreciseTap);
+            PRAGMA_DISABLE_DEPRECATION_WARNINGS
             Widget->IsFocusable = false;
+            PRAGMA_ENABLE_DEPRECATION_WARNINGS
         }
         
         ElevatedButton& OnPressed(UObject* Object, FName FuncName) {
@@ -139,6 +141,15 @@ namespace Flutter
 			Widget->SetSize(FVector2D(InWidth, Widget->GetSize().Y));
 			return *this;
 		}
+        operator UWidget*() const { return Widget; }
+    };
+
+    struct SizeBox
+    {
+        USizeBox* Widget;
+        SizeBox() {
+            Widget = CreateFlutterUMGWidget<USizeBox>();
+        }
         operator UWidget*() const { return Widget; }
     };
 
@@ -751,7 +762,9 @@ namespace Flutter
 
                 Btn->SetClickMethod(EButtonClickMethod::PreciseClick);
                 Btn->SetTouchMethod(EButtonTouchMethod::PreciseTap);
+                PRAGMA_DISABLE_DEPRECATION_WARNINGS
                 Btn->IsFocusable = false;
+                PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
                 if (ContextObject && Callbacks.IsValidIndex(i)) {
                     FScriptDelegate Delegate;

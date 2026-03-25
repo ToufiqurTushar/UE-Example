@@ -14,7 +14,9 @@ UFlutterInkWell::UFlutterInkWell()
 
 	SetStyle(Style);
 	
+	PRAGMA_DISABLE_DEPRECATION_WARNINGS
 	IsFocusable = false;
+	PRAGMA_ENABLE_DEPRECATION_WARNINGS
 	SetClickMethod(EButtonClickMethod::PreciseClick);
 	SetTouchMethod(EButtonTouchMethod::PreciseTap);
 	SetPressMethod(EButtonPressMethod::DownAndUp);

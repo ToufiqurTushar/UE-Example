@@ -22,6 +22,7 @@ protected:
     virtual TSharedRef<SWidget> RebuildWidget() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 private:
     int32 CurrentTabIndex = 0;
@@ -36,7 +37,7 @@ private:
     UWidget* BuildAdsPage();
     UWidget* BuildListPage();
     UWidget* BuildProfilePage();
-    UWidget* BuildSettingsPage();
+    UWidget* BuildRankingPage();
     UWidget* BuildAboutPage();
 
     UFUNCTION()
@@ -57,7 +58,36 @@ private:
     UWidget* BuildProfileViewPage();
     UWidget* BuildProfileEditPage();
 
+    UFUNCTION()
+    void OnRankingAddClicked();
+
+    UFUNCTION()
+    void OnRankingRemoveClicked();
+
+    UFUNCTION()
+    void OnRankingShuffleClicked();
+
     void LoadProfile();
+
+    struct FRankingItem {
+        int32 Id;
+        FString Name;
+        int32 Score;
+        UWidget* Widget = nullptr;
+        float CurrentY = 0.0f;
+        float TargetY = 0.0f;
+        float Opacity = 0.0f;
+        float TargetOpacity = 1.0f;
+        bool bIsRemoving = false;
+    };
+
+    TArray<FRankingItem> RankingItems;
+    UCanvasPanel* RankingCanvas = nullptr;
+    class USizeBox* RankingSizeBox = nullptr;
+    int32 NextRankingId = 0;
+    
+    float CurrentRankingHeight = 0.0f;
+    float TargetRankingHeight = 0.0f;
 
     FString CurrentName;
     FString CurrentEmail;
