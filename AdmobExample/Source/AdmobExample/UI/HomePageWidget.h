@@ -32,6 +32,7 @@ private:
 	UFUNCTION() void OnTab2Clicked();
 	UFUNCTION() void OnTab3Clicked();
 	UFUNCTION() void OnTab4Clicked();
+	UFUNCTION() void OnTab5Clicked();
 
 	void HandleRewardEarned();
 	void HandleBannerAdLoadFailed(const FString& ErrorMessage);

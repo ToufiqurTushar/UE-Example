@@ -11,6 +11,7 @@
 #include "UI/Pages/ProfilePageWidget.h"
 #include "UI/Pages/RankingPageWidget.h"
 #include "UI/Pages/AboutPageWidget.h"
+#include "UI/Pages/ExamplesPageWidget.h"
 
 using namespace Flutter;
 
@@ -34,7 +35,8 @@ TSharedRef<SWidget> UHomePageWidget::RebuildWidget() {
       CreateWidget<UListPageWidget>(this),
       CreateWidget<UProfilePageWidget>(this),
       CreateWidget<URankingPageWidget>(this),
-      CreateWidget<UAboutPageWidget>(this)
+      CreateWidget<UAboutPageWidget>(this),
+      CreateWidget<UExamplesPageWidget>(this)
   );
   BodySwitcher = Stack.Widget;
 
@@ -66,8 +68,9 @@ void UHomePageWidget::SwitchTab(int32 Index) {
             BottomNavigationBarItem(Icons::List, TEXT("List")),
             BottomNavigationBarItem(Icons::Person, TEXT("Profile")),
             BottomNavigationBarItem(Icons::Settings, TEXT("Ranking")),
-            BottomNavigationBarItem(Icons::Info, TEXT("About"))
-        }, this, {TEXT("OnTab0Clicked"), TEXT("OnTab1Clicked"), TEXT("OnTab2Clicked"), TEXT("OnTab3Clicked"), TEXT("OnTab4Clicked")}, CurrentTabIndex);
+            BottomNavigationBarItem(Icons::Info, TEXT("About")),
+            BottomNavigationBarItem(Icons::Settings, TEXT("Examples"))
+        }, this, {TEXT("OnTab0Clicked"), TEXT("OnTab1Clicked"), TEXT("OnTab2Clicked"), TEXT("OnTab3Clicked"), TEXT("OnTab4Clicked"), TEXT("OnTab5Clicked")}, CurrentTabIndex);
     }
 }
 
@@ -76,6 +79,7 @@ void UHomePageWidget::OnTab1Clicked() { SwitchTab(1); }
 void UHomePageWidget::OnTab2Clicked() { SwitchTab(2); }
 void UHomePageWidget::OnTab3Clicked() { SwitchTab(3); }
 void UHomePageWidget::OnTab4Clicked() { SwitchTab(4); }
+void UHomePageWidget::OnTab5Clicked() { SwitchTab(5); }
 
 void UHomePageWidget::NativeConstruct() {
   Super::NativeConstruct();
