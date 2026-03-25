@@ -1,5 +1,6 @@
 #include "AdsPageWidget.h"
 #include "FlutterUMGWidgets.h"
+#include "Blueprint/WidgetTree.h"
 #include "GoogleMobileAdsBPLibrary.h"
 #include "AdmobExampleGameInstance.h"
 
@@ -31,6 +32,10 @@ TSharedRef<SWidget> UAdsPageWidget::RebuildWidget() {
                       .Child(Text(TEXT("Check Initialization")))
               ))
           ));
+
+    if (WidgetTree) {
+        WidgetTree->RootWidget = MyCol.Widget;
+    }
 
     return MyCol.Widget->TakeWidget();
 }

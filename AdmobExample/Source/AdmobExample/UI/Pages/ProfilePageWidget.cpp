@@ -1,5 +1,6 @@
 #include "ProfilePageWidget.h"
 #include "FlutterUMGWidgets.h"
+#include "Blueprint/WidgetTree.h"
 #include "Kismet/GameplayStatics.h"
 #include "ProfileSaveGame.h"
 #include "AdmobExampleGameInstance.h"
@@ -24,7 +25,11 @@ TSharedRef<SWidget> UProfilePageWidget::RebuildWidget() {
     );
     ProfileSwitcher = Cast<UWidgetSwitcher>(Stack.Widget);
     
-    return ProfileSwitcher->TakeWidget();
+    if (WidgetTree) {
+        WidgetTree->RootWidget = Stack.Widget;
+    }
+
+    return Stack.Widget->TakeWidget();
 }
 
 UWidget* UProfilePageWidget::BuildProfileViewPage() {

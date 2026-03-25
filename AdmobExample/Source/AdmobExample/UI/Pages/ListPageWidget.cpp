@@ -1,5 +1,6 @@
 #include "ListPageWidget.h"
 #include "FlutterUMGWidgets.h"
+#include "Blueprint/WidgetTree.h"
 
 using namespace Flutter;
 
@@ -25,6 +26,10 @@ TSharedRef<SWidget> UListPageWidget::RebuildWidget() {
             })
         )
     );
+
+    if (WidgetTree) {
+        WidgetTree->RootWidget = MyCol.Widget;
+    }
 
     return MyCol.Widget->TakeWidget();
 }
