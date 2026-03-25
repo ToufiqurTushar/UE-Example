@@ -24,8 +24,9 @@ TSharedRef<SWidget> UFormsExampleWidget::RebuildWidget() {
 
     TArray<FString> Countries = { TEXT("USA"), TEXT("UK"), TEXT("Canada"), TEXT("Australia") };
 
-    auto Content = Flutter::Padding(FMargin(24.f)).Child(
-        Column()(
+    auto Content = ListView()(
+        Flutter::Padding(FMargin(24.f)).Child(
+            Column()(
             Text(TEXT("Registration Form")).FontSize(22).Color(FLinearColor::Black),
             SizedBox(1.f, 16.f),
             
@@ -52,8 +53,19 @@ TSharedRef<SWidget> UFormsExampleWidget::RebuildWidget() {
             Text(TEXT("Gender (Radio)")).FontSize(14).Color(FLinearColor::Gray),
             SizedBox(1.f, 4.f),
             Row().MainAxisAlignment(0)(
-                Radio().IsChecked(true).OnChanged(this, TEXT("OnGenderMaleChanged")), Text(TEXT("Male ")).Color(FLinearColor::Black),
-                Radio().IsChecked(false).OnChanged(this, TEXT("OnGenderFemaleChanged")), Text(TEXT("Female ")).Color(FLinearColor::Black)
+                [this]() {
+                    Radio R = Radio().IsChecked(true).OnChanged(this, TEXT("OnGenderMaleChanged"));
+                    MaleRadioBtn = R.Widget;
+                    return R;
+                }(),
+                Text(TEXT("Male ")).Color(FLinearColor::Black),
+                
+                [this]() {
+                    Radio R = Radio().IsChecked(false).OnChanged(this, TEXT("OnGenderFemaleChanged"));
+                    FemaleRadioBtn = R.Widget;
+                    return R;
+                }(),
+                Text(TEXT("Female ")).Color(FLinearColor::Black)
             ),
             SizedBox(1.f, 12.f),
 
@@ -76,7 +88,7 @@ TSharedRef<SWidget> UFormsExampleWidget::RebuildWidget() {
                 Flutter::Padding(FMargin(24.f, 14.f)).Child(Text(TEXT("Validate and Dump JSON")).FontSize(16).Color(FLinearColor::White))
             )
         )
-    );
+    ));
 
     auto Root = Container().Color(FLinearColor::White).Child(
         Column()(
@@ -93,8 +105,18 @@ void UFormsExampleWidget::OnNameChanged(const FText& Text) { NameStr = Text.ToSt
 void UFormsExampleWidget::OnEmailChanged(const FText& Text) { EmailStr = Text.ToString(); }
 void UFormsExampleWidget::OnPasswordChanged(const FText& Text) { PasswordStr = Text.ToString(); }
 void UFormsExampleWidget::OnTermsChanged(bool bIsChecked) { bTermsAccepted = bIsChecked; }
-void UFormsExampleWidget::OnGenderMaleChanged(bool bIsChecked) { if (bIsChecked) GenderStr = TEXT("Male"); }
-void UFormsExampleWidget::OnGenderFemaleChanged(bool bIsChecked) { if (bIsChecked) GenderStr = TEXT("Female"); }
+void UFormsExampleWidget::OnGenderMaleChanged(bool bIsChecked) { 
+    if (bIsChecked) {
+        GenderStr = TEXT("Male"); 
+        if (FemaleRadioBtn) FemaleRadioBtn->SetIsChecked(false);
+    }
+}
+void UFormsExampleWidget::OnGenderFemaleChanged(bool bIsChecked) { 
+    if (bIsChecked) {
+        GenderStr = TEXT("Female"); 
+        if (MaleRadioBtn) MaleRadioBtn->SetIsChecked(false);
+    }
+}
 void UFormsExampleWidget::OnCountryChanged(FString SelectedItem, ESelectInfo::Type SelectionType) { CountryStr = SelectedItem; }
 void UFormsExampleWidget::OnSkillCppChanged(bool bIsChecked) { bSkillCpp = bIsChecked; }
 void UFormsExampleWidget::OnSkillUEChanged(bool bIsChecked) { bSkillUE = bIsChecked; }

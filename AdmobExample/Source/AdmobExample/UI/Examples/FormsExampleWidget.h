@@ -27,6 +27,9 @@ public:
     UFUNCTION() void OnSubmitClicked();
 
 private:
+    class UCheckBox* MaleRadioBtn = nullptr;
+    class UCheckBox* FemaleRadioBtn = nullptr;
+
     FString NameStr;
     FString EmailStr;
     FString PasswordStr;

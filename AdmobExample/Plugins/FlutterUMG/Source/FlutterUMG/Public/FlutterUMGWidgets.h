@@ -457,6 +457,25 @@ namespace Flutter
         UComboBoxString* Widget;
         DropdownList() {
             Widget = CreateFlutterUMGWidget<UComboBoxString>();
+            
+            // Style the Dropdown Button
+            FComboBoxStyle Style = Widget->GetWidgetStyle();
+            Style.ComboButtonStyle.ButtonStyle.Normal.TintColor = FSlateColor(FLinearColor::White);
+            Style.ComboButtonStyle.ButtonStyle.Hovered.TintColor = FSlateColor(FLinearColor(0.9f, 0.9f, 0.9f, 1.0f));
+            Style.ComboButtonStyle.ButtonStyle.Pressed.TintColor = FSlateColor(FLinearColor(0.8f, 0.8f, 0.8f, 1.0f));
+            Widget->SetWidgetStyle(Style);
+
+            // Style the Popup Menu Items
+            FTableRowStyle RowStyle = Widget->GetItemStyle();
+            RowStyle.ActiveBrush.TintColor = FSlateColor(FLinearColor(0.1f, 0.5f, 0.9f, 1.0f)); // Selected Blue
+            RowStyle.ActiveHoveredBrush.TintColor = FSlateColor(FLinearColor(0.2f, 0.6f, 1.0f, 1.0f));
+            RowStyle.InactiveBrush.TintColor = FSlateColor(FLinearColor::White);
+            RowStyle.InactiveHoveredBrush.TintColor = FSlateColor(FLinearColor(0.9f, 0.9f, 0.9f, 1.0f));
+            RowStyle.EvenRowBackgroundBrush.TintColor = FSlateColor(FLinearColor::White);
+            RowStyle.OddRowBackgroundBrush.TintColor = FSlateColor(FLinearColor::White);
+            RowStyle.TextColor = FSlateColor(FLinearColor::Black);
+            RowStyle.SelectedTextColor = FSlateColor(FLinearColor::White);
+            Widget->SetItemStyle(RowStyle);
         }
         DropdownList& Options(const TArray<FString>& InOptions) {
             for (const FString& Option : InOptions) {
