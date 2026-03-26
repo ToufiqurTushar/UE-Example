@@ -1,0 +1,27 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "AdMob Plugin",
+	"Description": "A polished and reliable AdMob integration plugin for Unreal Engine. Provides seamless Android support for Banner, Interstitial, Rewarded, and Rewarded Interstitial ads with Blueprint-friendly APIs and clean callbacks.",
+	"Category": "Advertising",
+	"CreatedBy": "LOKO",
+	"CreatedByURL": "",
+	"DocsURL": "https://github.com/aswinvlunreal/AdMobPlugin-Documentation/blob/main/Docs/AdMobPluginDocumentation.pdf",
+	"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/abf1d7ab-028e-4980-8303-21d406e69a2f",
+	"SupportURL": "",
+	"EngineVersion": "5.7.0",
+	"CanContainContent": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "AdMobPlugin",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Android",
+				"Win64"
+			]
+		}
+	]
+}

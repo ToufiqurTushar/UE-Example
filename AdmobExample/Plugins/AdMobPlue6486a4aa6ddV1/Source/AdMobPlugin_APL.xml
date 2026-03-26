@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 Loko. All Rights Reserved. -->
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+  <log text="AdMobPlugin APL loaded." />
+
+  <init>
+      <setStringFromProperty result="AdmobAppID" ini="Engine" section="/Script/AdMobPlugin.AdMobSettings" property="AppID" default=""/>
+  </init>
+
+
+  <prebuildCopies>
+    <log text="Copying AdMob buildtime files to staging"/>
+    <copyDir src="$S(PluginDir)/ThirdParty/Android/Java" dst="$S(BuildDir)/src/com/google/admob" />
+    <log text="AdMobPlugin: Copy done." />
+  </prebuildCopies>
+  <gradleAdditions>
+    <insert>
+      allprojects {
+        repositories {
+          google()
+          mavenCentral()
+        }
+      }
+    </insert>
+  </gradleAdditions>
+  <buildGradleAdditions>
+    <insert>
+      dependencies {
+        implementation 'com.google.android.gms:play-services-ads:24.7.0'
+      }
+    </insert>
+  </buildGradleAdditions>
+  <androidManifestUpdates>
+      
+      <setElement result="AdMobAppId" value="meta-data" />
+				<addAttribute tag="$AdMobAppId" name="android:name" value="com.google.android.gms.ads.APPLICATION_ID" />
+				<addAttribute tag="$AdMobAppId" name="android:value" value="$S(AdmobAppID)" />
+				<addElement tag="application" name="AdMobAppId" />
+
+
+  </androidManifestUpdates>
+
+  <!-- Import and modify GameActivity -->
+  <gameActivityImportAdditions>
+    <insert>import com.google.admob.AdMobManager;</insert>
+  </gameActivityImportAdditions>
+
+  <gameActivityClassAdditions>
+    <insert>public static AdMobManager AdMobInstance;</insert>
+  </gameActivityClassAdditions>
+
+  <gameActivityOnCreateAdditions>
+    <insert>AdMobInstance = new AdMobManager(this);</insert>
+  </gameActivityOnCreateAdditions>
+</root>
